@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/CarlosPad08/backend-proyecto-mascotas/issues"
   },
-  "homepage": "https://github.com/CarlosPad08/backend-proyecto-mascotas#readme"
+  "homepage": "https://github.com/CarlosPad08/backend-proyecto-mascotas#readme",
+  "dependencies": {
+    "eslint": "^9.22.0"
+  }
 }
