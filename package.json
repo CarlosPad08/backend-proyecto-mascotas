@@ -1,0 +1,24 @@
+{
+  "name": "backend-proyecto-mascotas",
+  "version": "1.0.0",
+  "description": "Backend del software de integracion web para mascotas.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CarlosPad08/backend-proyecto-mascotas.git"
+  },
+  "keywords": [
+    "Javascript",
+    "backend",
+    "nodeJs"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CarlosPad08/backend-proyecto-mascotas/issues"
+  },
+  "homepage": "https://github.com/CarlosPad08/backend-proyecto-mascotas#readme"
+}
