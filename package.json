@@ -2,8 +2,12 @@
   "name": "backend-proyecto-mascotas",
   "version": "1.0.0",
   "description": "Backend del software de integracion web para mascotas.",
-  "main": "index.js",
+  "main": "server.js",
+  "type": "module",
   "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,6 +26,21 @@
   },
   "homepage": "https://github.com/CarlosPad08/backend-proyecto-mascotas#readme",
   "dependencies": {
-    "eslint": "^9.22.0"
+    "@libsql/client": "^0.15.0",
+    "bcrypt": "^5.1.1",
+    "better-sqlite3": "^11.9.1",
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "eslint": "^9.22.0",
+    "express": "^4.21.2",
+    "express-validator": "^7.2.1",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.14.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
   }
 }
