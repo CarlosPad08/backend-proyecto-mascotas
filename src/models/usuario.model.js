@@ -1,6 +1,31 @@
 import { turso } from "../config/database.js";
+import bcrypt from "bcrypt";
 
 export class Usuario {
+  
+  static async obtenerPorEmail(email) {
+    const query = "SELECT * FROM usuarios WHERE email = ?;";
+    const { rows } = await turso.execute({ sql: query, args: [email.toLowerCase().trim()] });
+    return rows[0] || null;
+  }
+
+  static async registrar({ rol_id, nombre, apellido, email, contrasena, telefono, direccion }) {
+    // Verificar si el email ya está registrado
+    const usuarioExistente = await this.obtenerPorEmail(email);
+    if (usuarioExistente) {
+      throw new Error("El email ya está registrado.");
+    }
+
+    // Hashear la contraseña
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(contrasena, saltRounds);
+
+    const query = "INSERT INTO usuarios (rol_id, nombre, apellido, email, contrasena, telefono, direccion) VALUES (?, ?, ?, ?, ?, ?, ?);";
+    await turso.execute({ sql: query, args: [rol_id, nombre, apellido, email.toLowerCase().trim(), hashedPassword, telefono, direccion] });
+
+    return { mensaje: "Usuario registrado correctamente" };
+  }
+  
   static async obtenerTodos() {
     const query = "SELECT * FROM usuarios;";
     const { rows } = await turso.execute(query);
