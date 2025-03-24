@@ -1,17 +1,30 @@
-import express, { json } from "express";
+import express from "express";
 import cors from "cors";
-import usuarioRoutes from "./routes/usuario.routes.js";
 import { setupSwagger } from "./config/swagger.js";
+import cookieParser from "cookie-parser";
+
+import usuarioRoutes from "./routes/usuario.routes.js";
+import rolRoutes from "./routes/rol.routes.js";
+import authRoutes from "./routes/auth.routes.js";
+import mascotaRoutes from "./routes/mascota.routes.js";
 
 const app = express();
 
 app.use(express.json());
-app.use(cors());
-setupSwagger(app);
+app.use(cookieParser());
+app.use(cors({
+  origin: "http://localhost:3000",
+  credentials: true
+}));
 
 app.use("/api/usuarios", usuarioRoutes);
+app.use("/api/roles", rolRoutes);
+app.use("/api/mascotas", mascotaRoutes);
+app.use("/api/auth", authRoutes);
 
-app.use((req, res, next) => {
+setupSwagger(app);
+
+app.use((res) => {
   res.status(404).json({ message: "Ruta no encontrada" });
 });
 
