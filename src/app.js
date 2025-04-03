@@ -24,8 +24,7 @@ app.use("/api/auth", authRoutes);
 
 setupSwagger(app);
 
-app.use((res) => {
-  res.status(404).json({ message: "Ruta no encontrada" });
+app.use((req, res, next) => {  
+  res.status(404).json({ message: "Ruta no encontrada" });  
 });
-
 export default app;

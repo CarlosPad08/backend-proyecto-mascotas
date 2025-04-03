@@ -31,6 +31,8 @@ export const extraerUsuarioId = (req, res, next) => {
   }
 };
 
+//Maneja la autenticacion del usuario
+
 export const autenticarUsuario = (req, res, next) => {
   const token = req.cookies.token;
 

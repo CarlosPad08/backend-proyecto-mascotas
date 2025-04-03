@@ -1,6 +1,7 @@
 import { Usuario } from "../models/usuario.model.js";
 import { generarToken } from "../utils/jwt.js";
 import bcrypt from "bcrypt";
+import nodemailer from "nodemailer";
 
 export const iniciarSesion = async (req, res) => {
   const { email, contrasena } = req.body;
@@ -96,5 +97,53 @@ export const eliminarUsuario = async (req, res) => {
     res.json(resultado);
   } catch (error) {
     res.status(500).json({ error: "Error al eliminar usuario: ", error });
+  }
+};
+
+
+
+export const solicitarRestablecimiento = async (req, res) => {
+  const { email } = req.body;
+  if (!email) {
+    return res.status(400).json({ mensaje: "El email es obligatorio" });
+}
+const emailLowerCase = email.toLowerCase();
+  try {
+      const usuario = await Usuario.obtenerPorEmail(email);
+      if (!usuario) {
+          return res.status(404).json({ mensaje: "Usuario no encontrado" });
+      }
+      
+      const token = generarToken(usuario);
+      res.cookie("resetToken", token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "Strict",
+          maxAge: 15 * 60 * 1000, // 15 minutos
+      });
+      
+      // Simular envío de correo con el token
+      console.log(`Enlace para restablecer contraseña: http://localhost:3000/reset?token=${token}`);
+      res.json({ mensaje: "Revisa tu correo para restablecer tu contraseña" });
+  } catch (error) {
+      res.status(500).json({ mensaje: "Error en el servidor", error: error.message });
+  }
+};
+
+export const restablecerContrasena = async (req, res) => {
+  const { nuevaContrasena } = req.body;
+  const token = req.cookies.resetToken;
+  try {
+      const usuario_id = verificarToken(token);
+      if (!usuario_id) {
+          return res.status(400).json({ mensaje: "Token inválido o expirado" });
+      }
+
+      const hash = await bcrypt.hash(nuevaContrasena, 10);
+      await Usuario.actualizar(usuario_id, { contrasena: hash });
+      res.clearCookie("resetToken");
+      res.json({ mensaje: "Contraseña restablecida exitosamente" });
+  } catch (error) {
+      res.status(500).json({ mensaje: "Error en el servidor", error: error.message });
   }
 };

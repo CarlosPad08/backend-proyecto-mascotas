@@ -2,6 +2,9 @@ import express from "express";
 import {
   iniciarSesion,
   cerrarSesion,
+  solicitarRestablecimiento,
+  restablecerContrasena
+  
 } from "../controllers/usuario.controller.js";
 
 const router = express.Router();
@@ -36,7 +39,10 @@ const router = express.Router();
  *         description: Error interno del servidor
  */
 
+//Rutas del sistema
 router.post("/login", iniciarSesion);
 router.post("/logout", cerrarSesion);
+router.post("/solicitar-restablecimiento", solicitarRestablecimiento);
+router.post("/restablecer-contrasena", restablecerContrasena);
 
 export default router;
