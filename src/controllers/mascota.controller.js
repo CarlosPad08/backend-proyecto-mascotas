@@ -10,7 +10,7 @@ export const obtenerMascotas = async (req, res) => {
 };
 
 export const obtenerMascotasUsuario = async (req, res) => {
-  const usuario_id = req.usuario.usuario_id;
+  const usuario_id = req.usuario_id;
 
   try {
     const mascotas = await Mascota.obtenerMascotasPorUsuario(usuario_id);
@@ -23,7 +23,9 @@ export const obtenerMascotasUsuario = async (req, res) => {
 export const obtenerMascotaPorId = async (req, res) => {
   try {
     const mascota = await Mascota.obtenerPorId(req.params.id);
-    if (!mascota) return res.status(404).json({ error: "Mascota no encontrada"});
+    if (!mascota) {
+        return res.status(404).json({ error: "Mascota no encontrada"})
+    };
     res.json(mascota);
   } catch (error) {
     res.status(500).json({ error: "Error al obtener mascota: ", error });

@@ -10,7 +10,7 @@ export class Mascota {
 
   static async obtenerMascotasPorUsuario(usuario_id) {
     try {
-      const query = "SELECT * FROM mascotas WHERE usuario_id = ?";
+      const query = "SELECT * FROM mascotas WHERE dueno_id = ?";
       const resultado = await turso.execute({
         sql: query,
         args: [usuario_id],

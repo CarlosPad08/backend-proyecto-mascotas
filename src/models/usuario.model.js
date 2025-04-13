@@ -21,7 +21,78 @@ export class Usuario {
     const hashedPassword = await bcrypt.hash(contrasena, saltRounds);
 
     const query = "INSERT INTO usuarios (rol_id, nombre, apellido, email, contrasena, telefono, direccion) VALUES (?, ?, ?, ?, ?, ?, ?);";
-    await turso.execute({ sql: query, args: [rol_id, nombre, apellido, email.toLowerCase().trim(), hashedPassword, telefono, direccion] });
+    await turso.execute({ sql: query, args: [rol_id, nombre, apellido, email.toLowerCase().trim(), /* `hashedPassword`
+    is
+    a
+    variable
+    that
+    stores
+    the
+    hashed
+    version
+    of
+    the
+    user's
+    password.
+    In
+    the
+    code
+    snippet
+    provided,
+    the
+    password
+    is
+    hashed
+    using
+    the
+    bcrypt
+    library
+    before
+    being
+    stored
+    in
+    the
+    database.
+    Hashing
+    the
+    password
+    adds
+    a
+    layer
+    of
+    security
+    by
+    converting
+    the
+    password
+    into
+    a
+    fixed-length
+    string
+    of
+    characters
+    that
+    cannot
+    be
+    easily
+    reversed
+    to
+    obtain
+    the
+    original
+    password.
+    This
+    helps
+    protect
+    user
+    passwords
+    in
+    case
+    of
+    a
+    data
+    breach. */
+    hashedPassword, telefono, direccion] });
 
     return { mensaje: "Usuario registrado correctamente" };
   }

@@ -12,9 +12,12 @@ import {
 const router = express.Router();
 
 router.get("/", obtenerMascotas);
-router.get("/:id", obtenerMascotaPorId);
+router.get("/buscar/:id", obtenerMascotaPorId);
 router.post("/", autenticarUsuario, crearMascota);
 router.put("/:id", autenticarUsuario, actualizarMascota);
 router.delete("/:id", eliminarMascota);
+
+// Ruta privada: obtener mascotas del usuario autenticado
+router.get("/obtener", autenticarUsuario, obtenerMascotasUsuario);
 
 export default router;

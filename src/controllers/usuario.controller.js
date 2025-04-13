@@ -1,3 +1,4 @@
+import { check } from "express-validator";
 import { Usuario } from "../models/usuario.model.js";
 import { generarToken } from "../utils/jwt.js";
 import bcrypt from "bcrypt";
@@ -12,9 +13,10 @@ export const iniciarSesion = async (req, res) => {
     if (!usuario) {
       return res.status(400).json({ mensaje: "Correo o contraseña incorrectos" });
     }
-
-    const esValida = await bcrypt.compare(contrasena, usuario.contrasena);
-
+    
+    
+    const esValida = await bcrypt.compare(contrasena,usuario.contrasena);
+   
     if (!esValida) {
       return res.status(400).json({ mensaje: "Correo o contraseña incorrectos" });
     }
@@ -47,6 +49,7 @@ export const registrarUsuario = async (req, res) => {
       return res.status(400).json({ error: "Todos los campos obligatorios deben llenarse." });
     }
 
+    
     const resultado = await Usuario.registrar({ rol_id, nombre, apellido, email, contrasena, telefono, direccion });
     res.status(201).json(resultado);
   } catch (error) {
@@ -147,3 +150,4 @@ export const restablecerContrasena = async (req, res) => {
       res.status(500).json({ mensaje: "Error en el servidor", error: error.message });
   }
 };
+
