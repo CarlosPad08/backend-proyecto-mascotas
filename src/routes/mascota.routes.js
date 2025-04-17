@@ -14,7 +14,7 @@ const router = express.Router();
 router.get("/", obtenerMascotas);
 router.get("/buscar/:id", obtenerMascotaPorId);
 router.post("/", autenticarUsuario, crearMascota);
-router.put("/:id", autenticarUsuario, actualizarMascota);
+router.post("/actualizar/:id", autenticarUsuario, actualizarMascota);
 router.delete("/:id", eliminarMascota);
 
 // Ruta privada: obtener mascotas del usuario autenticado

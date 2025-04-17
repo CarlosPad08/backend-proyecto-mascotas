@@ -43,10 +43,10 @@ export class Mascota {
 
   static async actualizar(id, datos) {
     const query = `
-    UPDATE mascotas SET usuario_id = ?, nombre = ?, especie = ?, raza = ?, edad = ?, foto = ?
+    UPDATE mascotas SET dueno_id = ?, nombre = ?, especie = ?, raza = ?, edad = ?, foto = ?
     WHERE mascota_id = ?;
     `;
-    await turso.execute({ sql: query, args: [datos.usuario_id, datos.nombre, datos.especie, datos.raza, datos.edad, datos.foto, id] });
+    await turso.execute({ sql: query, args: [datos.dueno_id, datos.nombre, datos.especie, datos.raza, datos.edad, datos.foto, id] });
     return { mensaje: "Mascota actualizada correctamente" };
   }
 
