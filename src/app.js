@@ -4,9 +4,10 @@ import { setupSwagger } from "./config/swagger.js";
 import cookieParser from "cookie-parser";
 
 import usuarioRoutes from "./routes/usuario.routes.js";
-import rolRoutes from "./routes/rol.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import mascotaRoutes from "./routes/mascota.routes.js";
+import rolRoutes from "./routes/rol.routes.js";
+import animalAdopcionRoutes from "./routes/animal_adopcion.routes.js";
 
 const app = express();
 
@@ -18,9 +19,10 @@ app.use(cors({
 }));
 
 app.use("/api/usuarios", usuarioRoutes);
-app.use("/api/roles", rolRoutes);
-app.use("/api/mascotas", mascotaRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/mascotas", mascotaRoutes);
+app.use("/api/animal-adopcion", animalAdopcionRoutes);
+app.use("/api/roles", rolRoutes);
 
 setupSwagger(app);
 
