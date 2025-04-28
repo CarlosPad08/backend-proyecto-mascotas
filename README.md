@@ -5,7 +5,7 @@ Plataforma de Gestión de Veterinarias y Adopciones
 ---
 
 ## 📌 Descripción  
-Este repositorio corresponde al **backend** de *MiMascota*, una plataforma web que conecta propietarios de mascotas con veterinarias y fundaciones de adopción. Desde esta rama se gestionan los servicios, controladores, modelos y lógica de negocio de la API que permite operar las funcionalidades principales del sistema.
+Este repositorio corresponde al **backend** de *MiMascota*, una plataforma web que sirve para conectar propietarios de mascotas con veterinarias y fundaciones de adopción. Desde esta rama se gestionan los servicios, controladores, modelos y lógica de negocio de la API que permite operar las funcionalidades principales del sistema.
 
 ---
 
