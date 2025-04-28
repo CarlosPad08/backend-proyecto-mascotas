@@ -24,7 +24,7 @@ Este repositorio corresponde al **backend** de *MiMascota*, una plataforma web q
 ## 🛠️ Tecnologías Utilizadas  
 
 - **Node.js** – Entorno de ejecución para  backend  
-- **Express.js** – Framework para crear la API REST  
+- **Express.js** – Framework para la creacion de la API REST  
 - **Turso** – Base de datos (SQLite moderna con sincronización en edge)  
 - **JWT** – Autenticación basada en tokens  
 - **Dotenv** – Configuración de variables de entorno  
