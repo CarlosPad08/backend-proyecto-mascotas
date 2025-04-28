@@ -11,14 +11,14 @@ export const iniciarSesion = async (req, res) => {
     const usuario = await Usuario.obtenerPorEmail(email);
 
     if (!usuario) {
-      return res.status(400).json({ mensaje: "Correo o contraseña incorrectos" });
+      return res.status(401).json({ mensaje: "Correo o contraseña incorrectos" });
     }
     
     
     const esValida = await bcrypt.compare(contrasena,usuario.contrasena);
    
     if (!esValida) {
-      return res.status(400).json({ mensaje: "Correo o contraseña incorrectos" });
+      return res.status(401).json({ mensaje: "Correo o contraseña incorrectos" });
     }
 
     const token = generarToken(usuario);
