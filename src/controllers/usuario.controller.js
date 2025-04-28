@@ -7,31 +7,40 @@ import nodemailer from "nodemailer";
 export const iniciarSesion = async (req, res) => {
   const { email, contrasena } = req.body;
 
+  if (!email || !contrasena) {
+    return res.status(400).json({ mensaje: "Correo y contraseña son obligatorios" });
+  }
+
   try {
-    const usuario = await Usuario.obtenerPorEmail(email);
+    const usuario = await Usuario.obtenerPorEmail(email.toLowerCase());
 
     if (!usuario) {
       return res.status(401).json({ mensaje: "Correo o contraseña incorrectos" });
     }
+
     
     
-    const esValida = await bcrypt.compare(contrasena,usuario.contrasena);
+    const esValida = await bcrypt.compare(contrasena, usuario.contrasena);
    
+
+
+    const esValida = await bcrypt.compare(contrasena, usuario.contrasena);
+
+
     if (!esValida) {
       return res.status(401).json({ mensaje: "Correo o contraseña incorrectos" });
     }
 
     const token = generarToken(usuario);
 
-    // Configurar cookie segura con el token
     res.cookie("token", token, {
-      httpOnly: true, // Evita acceso desde JavaScript en el navegador (protección contra XSS)
-      secure: process.env.NODE_ENV === "production", // Solo en HTTPS en producción
-      sameSite: "Strict", // Protege contra ataques CSRF
-      maxAge: 2 * 60 * 60 * 1000, // Expira en 2 horas
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Strict",
+      maxAge: 2 * 60 * 60 * 1000, // 2 horas
     });
 
-    res.status(200).json({ mensaje: "Inicio de sesión exitoso", token });
+    res.status(200).json({ mensaje: "Inicio de sesión exitoso", usuario: { id: usuario.id, email: usuario.email, nombre: usuario.nombre } });
   } catch (error) {
     res.status(500).json({ mensaje: "Error en el servidor", error: error.message });
   }
