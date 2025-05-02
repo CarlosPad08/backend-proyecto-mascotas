@@ -8,6 +8,7 @@ import authRoutes from "./routes/auth.routes.js";
 import mascotaRoutes from "./routes/mascota.routes.js";
 import rolRoutes from "./routes/rol.routes.js";
 import animalAdopcionRoutes from "./routes/animal_adopcion.routes.js";
+import solicitudAdopcionRoutes from "./routes/solicitudes_adopcion.routes.js";
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/mascotas", mascotaRoutes);
 app.use("/api/animal-adopcion", animalAdopcionRoutes);
 app.use("/api/roles", rolRoutes);
+app.use("/api/solicitudes-adopcion", solicitudAdopcionRoutes);
 
 setupSwagger(app);
 
