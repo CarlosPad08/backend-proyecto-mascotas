@@ -20,6 +20,8 @@ export const cargarDatosUsuario = async (req, res, next) => {
     
     // Añade el usuario completo a la solicitud
     req.usuario = usuario;
+    //Diferencia entre usuario o refugio
+    req.usuario.tipo = usuario.refugio_id ? 'refugio' : 'usuario';
     next();
   } catch (error) {
     console.error('Error al cargar datos de usuario:', error);

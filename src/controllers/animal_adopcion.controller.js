@@ -32,12 +32,26 @@ export const obtenerAnimalPorId = async (req, res) => {
 
 export const crearAnimal = async (req, res) => {
   try {
+
+    
+    let edad = parseInt(req.body.edad, 10);
+
+    // Validación de edad
+    if (isNaN(edad) || edad < 0 || edad > 30) {
+      return res.status(400).json({ error: `Edad inválida. Debe ser un número entre 0 y 30. Valor recibido: ${req.body.edad}` });
+    }
+
+    // Sobrescribe edad con valor ya validado y parseado
+    req.body.edad = edad;
+
     const resultado = await AnimalAdopcion.registrar(req.body);
-    res.status(201).json(resultado);
+    res.status(201).json({ message: "¡Animal creado exitosamente!", resultado });
   } catch (error) {
-    res.status(400).json({ error: "Error al crear animal: ", error });
+    console.error("Error al crear animal:", error);
+    res.status(400).json({ error: "Error al crear animal", detalle: error.message });
   }
 };
+
 
 export const actualizarAnimal = async (req, res) => {
   try {

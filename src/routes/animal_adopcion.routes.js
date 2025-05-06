@@ -14,9 +14,11 @@ const router = express.Router();
 router.get("/", obtenerAnimales);
 router.get("/:id", obtenerAnimalPorId);
 router.get("/refugio/:refugio_id", obtenerAnimalesPorRefugio);
+router.get("/buscar", buscarAnimales);
+
 router.post("/", crearAnimal);
 router.put("/:id", actualizarAnimal);
 router.delete("/:id", eliminarAnimal);
-router.get("/buscar", buscarAnimales);
+
 
 export default router;
