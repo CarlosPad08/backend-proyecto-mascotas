@@ -33,7 +33,16 @@ export const iniciarSesion = async (req, res) => {
       maxAge: 2 * 60 * 60 * 1000, // 2 horas
     });
 
-    res.status(200).json({ mensaje: "Inicio de sesión exitoso", usuario: { id: usuario.id, email: usuario.email, nombre: usuario.nombre } });
+    // Send user information and a client token for local storage
+    res.status(200).json({ 
+      mensaje: "Inicio de sesión exitoso", 
+      token, // Token for client-side storage
+      usuario: {
+        id: usuario.id,
+        nombre: usuario.nombre,
+        email: usuario.email,
+      }
+    });
   } catch (error) {
     res.status(500).json({ mensaje: "Error en el servidor", error: error.message });
   }
