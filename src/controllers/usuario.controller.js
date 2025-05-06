@@ -7,27 +7,30 @@ import nodemailer from "nodemailer";
 export const iniciarSesion = async (req, res) => {
   const { email, contrasena } = req.body;
 
+  if (!email || !contrasena) {
+    return res.status(400).json({ mensaje: "Correo y contraseña son obligatorios" });
+  }
+
   try {
-    const usuario = await Usuario.obtenerPorEmail(email);
+    const usuario = await Usuario.obtenerPorEmail(email.toLowerCase());
 
     if (!usuario) {
-      return res.status(400).json({ mensaje: "Correo o contraseña incorrectos" });
+      return res.status(401).json({ mensaje: "Correo o contraseña incorrectos" });
     }
-    
+
     const esValida = await bcrypt.compare(contrasena, usuario.contrasena);
-   
-    if (!esValida) { // Fixed the condition - was incorrectly returning error when password matched
-      return res.status(400).json({ mensaje: "Correo o contraseña incorrectos" });
+
+    if (!esValida) {
+      return res.status(401).json({ mensaje: "Correo o contraseña incorrectos" });
     }
 
     const token = generarToken(usuario);
 
-    // Configurar cookie segura con el token
     res.cookie("token", token, {
-      httpOnly: true, // Evita acceso desde JavaScript en el navegador (protección contra XSS)
-      secure: process.env.NODE_ENV === "production", // Solo en HTTPS en producción
-      sameSite: "Strict", // Protege contra ataques CSRF
-      maxAge: 2 * 60 * 60 * 1000, // Expira en 2 horas
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Strict",
+      maxAge: 2 * 60 * 60 * 1000, // 2 horas
     });
 
     // Send user information and a client token for local storage
