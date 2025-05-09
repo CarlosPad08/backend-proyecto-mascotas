@@ -5,8 +5,13 @@ import { AnimalAdopcion } from '../models/animal_adopcion.model.js';
 export const crearSolicitud = async (req, res) => {
     try {
         const usuario_id = req.usuario_id;
-        const nombreSolicitante = `${req.usuario.nombre} ${req.usuario.apellido}`.trim();
         const { mascota_id, mensaje } = req.body;
+
+        // Primero, obtener datos del usuario desde la base de datos
+        const usuario = await Usuario.obtenerPorId(usuario_id);
+        if (!usuario) {
+            return res.status(404).json({ error: "Usuario no encontrado" });
+        }
 
         // Verificar si la mascota existe
         const mascota = await AnimalAdopcion.obtenerPorId(mascota_id);
@@ -14,19 +19,27 @@ export const crearSolicitud = async (req, res) => {
             return res.status(404).json({ error: "Mascota no encontrada" });
         }
 
+        // Formatear la fecha como string ISO
+        const fechaActual = new Date().toISOString();
+        // Dejar solo la fecha (quitar todo de la T hacia adelante)
+        const fechaSinHora = fechaActual.split('T')[0];
+        // Quitar los guiones
+        const fechaSinGuiones = fechaSinHora.replace(/-/g, '');
+
         // Crear la solicitud de adopción
         const resultado = await SolicitudAdopcion.crearSolicitud({
             usuario_id,
             mascota_id,
             mensaje,
             estado: 'pendiente',
-            fecha_solicitud: new Date(),
+            fecha_solicitud: fechaSinGuiones,
             fecha_respuesta: null
         });
 
         res.status(201).json(resultado);
     } catch (error) {
-        res.status(500).json({ error: "Error al crear solicitud de adopción: ", error });
+        console.error("Error al crear solicitud:", error);
+        res.status(500).json({ error: "Error al crear solicitud de adopción", mensaje: error.message });
     }
 }
 

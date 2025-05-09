@@ -40,12 +40,17 @@ export const autenticarUsuario = (req, res, next) => {
     return res.status(401).json({ mensaje: "Acceso denegado, token no proporcionado" });
   }
 
-  const usuarioDecodificado = verificarToken(token);
+  try {
+    const usuarioDecodificado = verificarToken(token);
 
-  if (!usuarioDecodificado) {
-    return res.status(403).json({ mensaje: "Token inválido o expirado" });
+    if (!usuarioDecodificado) {
+      return res.status(403).json({ mensaje: "Token inválido o expirado" });
+    }
+
+    req.usuario_id = usuarioDecodificado;
+    next();
+  } catch (error) {
+    console.error("Error al verificar token:", error);
+    return res.status(403).json({ mensaje: "Error al verificar token de autenticación" });
   }
-
-  req.usuario_id = usuarioDecodificado;
-  next();
 };

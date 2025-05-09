@@ -19,9 +19,9 @@ export const iniciarSesion = async (req, res) => {
     }
 
     const esValida = await bcrypt.compare(contrasena, usuario.contrasena);
-
+   
     if (!esValida) {
-      return res.status(401).json({ mensaje: "Correo o contraseña incorrectos" });
+      return res.status(400).json({ mensaje: "Correo o contraseña incorrectos" });
     }
 
     const token = generarToken(usuario);
@@ -30,19 +30,24 @@ export const iniciarSesion = async (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "Strict",
-      maxAge: 2 * 60 * 60 * 1000, // 2 horas
+      maxAge: 12 * 60 * 60 * 1000,
     });
-
-    // Send user information and a client token for local storage
-    res.status(200).json({ 
-      mensaje: "Inicio de sesión exitoso", 
-      token, // Token for client-side storage
-      usuario: {
-        id: usuario.id,
-        nombre: usuario.nombre,
-        email: usuario.email,
-      }
+    
+    // Enviar respuesta con los datos del usuario (sin contraseña)
+    const usuarioData = {
+      usuario_id: usuario.usuario_id,
+      nombre: usuario.nombre,
+      apellido: usuario.apellido,
+      email: usuario.email,
+      rol_id: usuario.rol_id
+    };
+    
+    // AÑADIR ESTA RESPUESTA
+    return res.status(200).json({
+      mensaje: "Inicio de sesión exitoso",
+      usuario: usuarioData
     });
+    
   } catch (error) {
     res.status(500).json({ mensaje: "Error en el servidor", error: error.message });
   }
@@ -162,4 +167,17 @@ export const restablecerContrasena = async (req, res) => {
   }
 };
 
-
+export const verifyToken = (req, res) => {
+  try {
+    // Si la solicitud llega hasta aquí, significa que el middleware de autenticación
+    // ya verificó el token y lo consideró válido
+    
+    // Puedes enviar información básica del usuario si lo deseas
+    return res.status(200).json({
+      mensaje: "Token válido"
+    });
+  } catch (error) {
+    console.error("Error en la verificación del token:", error);
+    return res.status(500).json({ mensaje: "Error interno del servidor" });
+  }
+};
