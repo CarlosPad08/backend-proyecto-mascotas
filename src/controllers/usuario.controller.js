@@ -166,18 +166,3 @@ export const restablecerContrasena = async (req, res) => {
       res.status(500).json({ mensaje: "Error en el servidor", error: error.message });
   }
 };
-
-export const verifyToken = (req, res) => {
-  try {
-    // Si la solicitud llega hasta aquí, significa que el middleware de autenticación
-    // ya verificó el token y lo consideró válido
-    
-    // Puedes enviar información básica del usuario si lo deseas
-    return res.status(200).json({
-      mensaje: "Token válido"
-    });
-  } catch (error) {
-    console.error("Error en la verificación del token:", error);
-    return res.status(500).json({ mensaje: "Error interno del servidor" });
-  }
-};
