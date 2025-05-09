@@ -3,9 +3,7 @@ import {
   iniciarSesion,
   cerrarSesion,
   solicitarRestablecimiento,
-  restablecerContrasena,
-  verifyToken,
-  
+  restablecerContrasena
 } from "../controllers/usuario.controller.js";
 
 const router = express.Router();
@@ -43,7 +41,6 @@ const router = express.Router();
 //Rutas del sistema
 router.post("/login", iniciarSesion);
 router.post("/logout", cerrarSesion);
-router.get("/verify", verifyToken);
 router.post("/solicitar-restablecimiento", solicitarRestablecimiento);
 router.post("/restablecer-contrasena", restablecerContrasena);
 
