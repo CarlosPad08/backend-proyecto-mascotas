@@ -16,7 +16,7 @@ export const iniciarSesion = async (req, res) => {
     
     const esValida = await bcrypt.compare(contrasena, usuario.contrasena);
    
-    if (!esValida) { // Fixed the condition - was incorrectly returning error when password matched
+    if (!esValida) {
       return res.status(400).json({ mensaje: "Correo o contraseña incorrectos" });
     }
 
@@ -24,22 +24,27 @@ export const iniciarSesion = async (req, res) => {
 
     // Configurar cookie segura con el token
     res.cookie("token", token, {
-      httpOnly: true, // Evita acceso desde JavaScript en el navegador (protección contra XSS)
-      secure: process.env.NODE_ENV === "production", // Solo en HTTPS en producción
-      sameSite: "Strict", // Protege contra ataques CSRF
-      maxAge: 2 * 60 * 60 * 1000, // Expira en 2 horas
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Strict",
+      maxAge: 12 * 60 * 60 * 1000,
     });
-
-    // Send user information and a client token for local storage
-    res.status(200).json({ 
-      mensaje: "Inicio de sesión exitoso", 
-      token, // Token for client-side storage
-      usuario: {
-        id: usuario.id,
-        nombre: usuario.nombre,
-        email: usuario.email,
-      }
+    
+    // Enviar respuesta con los datos del usuario (sin contraseña)
+    const usuarioData = {
+      usuario_id: usuario.usuario_id,
+      nombre: usuario.nombre,
+      apellido: usuario.apellido,
+      email: usuario.email,
+      rol_id: usuario.rol_id
+    };
+    
+    // AÑADIR ESTA RESPUESTA
+    return res.status(200).json({
+      mensaje: "Inicio de sesión exitoso",
+      usuario: usuarioData
     });
+    
   } catch (error) {
     res.status(500).json({ mensaje: "Error en el servidor", error: error.message });
   }
@@ -159,4 +164,17 @@ export const restablecerContrasena = async (req, res) => {
   }
 };
 
-
+export const verifyToken = (req, res) => {
+  try {
+    // Si la solicitud llega hasta aquí, significa que el middleware de autenticación
+    // ya verificó el token y lo consideró válido
+    
+    // Puedes enviar información básica del usuario si lo deseas
+    return res.status(200).json({
+      mensaje: "Token válido"
+    });
+  } catch (error) {
+    console.error("Error en la verificación del token:", error);
+    return res.status(500).json({ mensaje: "Error interno del servidor" });
+  }
+};

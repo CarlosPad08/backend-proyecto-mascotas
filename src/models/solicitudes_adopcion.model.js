@@ -1,19 +1,26 @@
 import { turso } from "../config/database.js";
 
 export class SolicitudAdopcion {
-  // Crear una nueva solicitud de adopción
-  static async crearSolicitud(datos) {
+// Crear una nueva solicitud de adopción
+static async crearSolicitud(datos) {
     const query = "INSERT INTO solicitudes_adopcion (usuario_id, mascota_id, mensaje, estado, fecha_solicitud, fecha_respuesta) VALUES (?, ?, ?, ?, ?, ?);";
-    await turso.execute({ sql: query, args: [
-        datos.usuario_id,
-        datos.mascota_id,
-        datos.mensaje,
-        datos.estado,
-        datos.fecha_solicitud,
-        datos.fecha_respuesta,
-    ] });
-    return { mensaje: "Solicitud de adopción creada correctamente" };
-  }
+    
+    try {
+        await turso.execute({ sql: query, args: [
+                datos.usuario_id,
+                datos.mascota_id,
+                datos.mensaje,
+                datos.estado,
+                datos.fecha_solicitud,
+                datos.fecha_respuesta,
+        ] });
+
+        return { mensaje: "Solicitud de adopción creada correctamente" };
+    } catch (error) {
+        console.error("Error al crear la solicitud de adopción:", error);
+        throw new Error("No se pudo crear la solicitud de adopción. Intente nuevamente.");
+    }
+}
 
   // Obtener todas las solicitudes de adopción
     static async obtenerSolicitudes() {
