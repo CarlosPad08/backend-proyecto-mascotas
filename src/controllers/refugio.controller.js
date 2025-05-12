@@ -32,7 +32,7 @@ export const IniciarSesion = async (req, res) => {
 
         // Enviar respuesta con los datos del refugio (sin contraseña)
         const refugioData = {
-            id: refugio.id,
+            id: refugio.refugio_id,
             nombre: refugio.nombre,
             direccion: refugio.direccion,
             telefono: refugio.telefono,
