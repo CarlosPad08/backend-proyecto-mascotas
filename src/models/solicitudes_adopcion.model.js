@@ -66,9 +66,9 @@ static async crearSolicitud(datos) {
     }
 
     // Obtener solicitudes de adopción por usuario
-    static async obtenerSolicitudesPorUsuario(usuario_id) {
-        const query = "SELECT * FROM solicitudes_adopcion WHERE usuario_id = ?;";
-        const { rows } = await turso.execute({ sql: query, args: [usuario_id] });
+    static async obtenerSolicitudesPorUsuario(refugio_id) {
+        const query = "SELECT s.id AS solicitud_id, s.usuario_id, s.mascota_id, s.mensaje, s.estado, s.fecha_solicitud, s.fecha_respuesta, a.nombre AS nombre_mascota, r.refugio_id, r.nombre AS nombre_refugio FROM  solicitudes_adopcion s JOIN  animales_adopcion a ON s.mascota_id = a.animal_id JOIN  refugios r ON a.refugio_id = r.refugio_id WHERE r.refugio_id = ?;";
+        const { rows } = await turso.execute({ sql: query, args: [refugio_id] });
         return rows;
     }
 
