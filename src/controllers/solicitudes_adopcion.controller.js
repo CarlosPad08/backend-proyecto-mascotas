@@ -96,8 +96,8 @@ export const eliminarSolicitud = async (req, res) => {
 
 export const obtenerSolicitudesPorUsuario = async (req, res) => {
     try {
-        const { usuario_id } = req.params;
-        const solicitudes = await SolicitudAdopcion.obtenerSolicitudesPorUsuario(usuario_id);
+        const { refugio_id } = req.params;
+        const solicitudes = await SolicitudAdopcion.obtenerSolicitudesPorUsuario(refugio_id);
         res.json(solicitudes);
     } catch (error) {
         res.status(500).json({ error: "Error al obtener solicitudes de adopción por usuario: ", error });
