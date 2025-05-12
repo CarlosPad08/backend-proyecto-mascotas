@@ -9,6 +9,7 @@ import {
   actualizarSolicitud,
   actualizarEstadoSolicitud,
   eliminarSolicitud,
+  obtenerSolicitudesPorUsuario,
 } from '../controllers/solicitudes_adopcion.controller.js';
 
 const router = express.Router();
@@ -36,6 +37,7 @@ router.post('/crear-mascota', autenticarUsuario, cargarDatosUsuario, (req, res) 
 // Rutas para solicitudes de adopción
 router.post('/', autenticarUsuario, cargarDatosUsuario, crearSolicitud);
 router.get('/', autenticarUsuario, cargarDatosUsuario, obtenerSolicitudes);
+router.get('/refugio/:id', autenticarUsuario, cargarDatosUsuario, obtenerSolicitudesPorUsuario);
 router.get('/:id', autenticarUsuario, cargarDatosUsuario, obtenerSolicitudPorId);
 router.put('/:id', autenticarUsuario, cargarDatosUsuario, actualizarSolicitud);
 router.patch('/:id/estado', autenticarUsuario, cargarDatosUsuario, actualizarEstadoSolicitud);
