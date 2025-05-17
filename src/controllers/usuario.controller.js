@@ -20,7 +20,7 @@ export const iniciarSesion = async (req, res) => {
 
     const esValida = await bcrypt.compare(contrasena, usuario.contrasena);
    
-    if (!esValida) {
+    if (esValida) {
       return res.status(400).json({ mensaje: "Correo o contraseña incorrectos" });
     }
 
