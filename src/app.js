@@ -10,6 +10,7 @@ import rolRoutes from "./routes/rol.routes.js";
 import animalAdopcionRoutes from "./routes/animal_adopcion.routes.js";
 import solicitudAdopcionRoutes from "./routes/solicitudes_adopcion.routes.js";
 import refugioRoutes from "./routes/refugio.routes.js";
+import veterinariaRoutes from "./routes/veterinaria.routes.js";
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use("/api/animal-adopcion", animalAdopcionRoutes);
 app.use("/api/roles", rolRoutes);
 app.use("/api/solicitudes-adopcion", solicitudAdopcionRoutes);
 app.use("/api/refugios", refugioRoutes);
+app.use("/api/veterinarias", veterinariaRoutes);
 
 setupSwagger(app);
 
