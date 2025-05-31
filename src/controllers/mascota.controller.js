@@ -10,7 +10,7 @@ export const obtenerMascotas = async (req, res) => {
 };
 
 export const obtenerMascotasUsuario = async (req, res) => {
-  const usuario_id = req.usuario_id;
+  const usuario_id = req.params.id;
 
   try {
     const mascotas = await Mascota.obtenerMascotasPorUsuario(usuario_id);
