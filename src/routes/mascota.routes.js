@@ -18,6 +18,6 @@ router.post("/actualizar/:id", autenticarUsuario, actualizarMascota);
 router.delete("/:id", eliminarMascota);
 
 // Ruta privada: obtener mascotas del usuario autenticado
-router.get("/obtener", autenticarUsuario, obtenerMascotasUsuario);
+router.get("/usuario/:id", obtenerMascotasUsuario);
 
 export default router;
