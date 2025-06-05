@@ -7,7 +7,6 @@ export class Refugio {
     static async registrar({ nombre, direccion, telefono, descripcion, email, contrasena }) {
         
         const refugioExistente = await this.obtenerPorEmail(email);
-        console.log("Llega aca");
 
         if (refugioExistente) {
             throw new Error("El email ya está registrado.");
