@@ -39,7 +39,10 @@ export const iniciarSesion = async (req, res) => {
       nombre: usuario.nombre,
       apellido: usuario.apellido,
       email: usuario.email,
-      rol_id: usuario.rol_id
+      rol_id: usuario.rol_id,
+      telefono: usuario.telefono || null,
+      direccion: usuario.direccion || null,
+      imagen: usuario.imagen || null
     };
     
     // AÑADIR ESTA RESPUESTA
