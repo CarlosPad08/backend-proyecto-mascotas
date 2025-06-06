@@ -13,31 +13,36 @@ export class AnimalAdopcion {
       estado: animal.estado || '',
       descripcion: animal.descripcion || '',
       foto: animal.foto || '',
+      sexo: animal.sexo || '',
+      peso: animal.peso || '',
+      vacunas: animal.vacunas || '',
+      tamano: animal.tamano || ''
+      
     };
   }
 
   static async obtenerPorId(id) {
-    const query = `SELECT animal_id, refugio_id, nombre, especie, raza, edad, estado, descripcion, foto FROM animales_adopcion WHERE animal_id = ?;`;
+    const query = `SELECT animal_id, refugio_id, nombre, especie, raza, edad, estado, descripcion, foto,sexo,peso, vacunas, tamano FROM animales_adopcion WHERE animal_id = ?;`;
     const { rows } = await turso.execute({ sql: query, args: [id] });
     return rows[0] ? this.formatearAnimal(rows[0]) : null;
   }
 
     static async obtenerPorRefugio(refugio_id) {
-        const query = `SELECT animal_id, refugio_id, nombre, especie, raza, edad, estado, descripcion, foto FROM animales_adopcion WHERE refugio_id = ?;`;
+        const query = `SELECT animal_id, refugio_id, nombre, especie, raza, edad, estado, descripcion, foto, sexo,peso, vacunas, tamano FROM animales_adopcion WHERE refugio_id = ?;`;
         const { rows } = await turso.execute({ sql: query, args: [refugio_id] });
         return rows.map(this.formatearAnimal);
     }
 
     static async obtenerTodos() {
-        const query = `SELECT animal_id, refugio_id, nombre, especie, raza, edad, estado, descripcion, foto FROM animales_adopcion;`;
+        const query = `SELECT animal_id, refugio_id, nombre, especie, raza, edad, estado, descripcion, foto, sexo,peso, vacunas, tamano FROM animales_adopcion;`;
         const { rows } = await turso.execute(query);
         return rows.map(this.formatearAnimal);
     }
 
-    static async registrar({ refugio_id, nombre, especie, raza, edad, estado, descripcion, foto }) {
+    static async registrar({ refugio_id, nombre, especie, raza, edad, estado, descripcion, foto,sexo,peso, vacunas, tamano }) {
         const query = `
-            INSERT INTO animales_adopcion (refugio_id, nombre, especie, raza, edad, estado, descripcion, foto)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+            INSERT INTO animales_adopcion (refugio_id, nombre, especie, raza, edad, estado, descripcion, foto,sexo,peso, vacunas, tamano)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?);
         `;
         await turso.execute({
             sql: query,
@@ -52,15 +57,25 @@ export class AnimalAdopcion {
             edad,
             estado,
             descripcion || '',
-            foto || ''
+            foto || '',
+            sexo,
+            peso,
+            vacunas,
+            tamano
             ]
         });
     }
 
-    static async actualizar(id, { refugio_id, nombre, especie, raza, edad, estado, descripcion, foto }) {
+    static async actualizar(id, { refugio_id, nombre, especie, raza, edad, estado, descripcion, foto,sexo,peso, vacunas, tamano}) {
+
+        
+
+
+
+
         const query = `
             UPDATE animales_adopcion
-            SET refugio_id = ?, nombre = ?, especie = ?, raza = ?, edad = ?, estado = ?, descripcion = ?, foto = ?
+            SET refugio_id = ?, nombre = ?, especie = ?, raza = ?, edad = ?, estado = ?, descripcion = ?, foto = ?,sexo = ?,peso = ?, vacunas = ?,tamano = ?
             WHERE animal_id = ?;
         `;
         await turso.execute({
@@ -77,6 +92,10 @@ export class AnimalAdopcion {
                 estado,
                 descripcion || '',
                 foto || '',
+                sexo,
+                peso,
+                vacunas,
+                tamano,
                 id
             ]
         });

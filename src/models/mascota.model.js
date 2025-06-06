@@ -28,13 +28,13 @@ export class Mascota {
     return rows[0] || null;
   }
 
-  static async crear({ dueno_id, nombre, especie, raza, edad, foto }) {
+  static async crear({ dueno_id, nombre, especie, raza, edad, foto, sexo, peso, vacunas, tamano }) {
     try {
       const query = `
-      INSERT INTO mascotas (dueno_id, nombre, especie, raza, edad, foto)
-      VALUES (?, ?, ?, ?, ?, ?);
+      INSERT INTO mascotas (dueno_id, nombre, especie, raza, edad, foto, sexo,peso, vacunas, tamano)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
       `;
-      await turso.execute({ sql: query, args: [dueno_id, nombre, especie, raza, edad, foto] });
+      await turso.execute({ sql: query, args: [dueno_id, nombre, especie, raza, edad, foto,sexo,peso, vacunas, tamano] });
       return { mensaje: "Mascota creada correctamente" };
     } catch (error) {
       throw new Error("Error al crear mascota: " + error.message);
@@ -42,11 +42,41 @@ export class Mascota {
   }
 
   static async actualizar(id, datos) {
+    // Primero obtenemos el usuario actual
+    const mascotaActual = await this.obtenerPorId(id);
+    if (!mascotaActual) {
+      throw new Error("Mascota no encontrado");
+    }
+
+    const updatesPet = {
+      dueno_id: datos.dueno_id !== undefined ? datos.dueno_id : mascotaActual.dueno_id,
+      nombre: datos.nombre !== undefined ? datos.nombre : mascotaActual.nombre,
+      especie: datos.especie !== undefined ? datos.especie : mascotaActual.especie,
+      raza: datos.raza !== undefined ? datos.raza : mascotaActual.raza,
+      edad: datos.edad !== undefined ? datos.edad : mascotaActual.edad,
+      foto: datos.foto !== undefined ? datos.foto : mascotaActual.foto,
+      sexo: datos.sexo !== undefined ? datos.sexo : mascotaActual.sexo,
+      peso: datos.peso !== undefined ? datos.peso : mascotaActual.peso,
+      vacunas: datos.vacunas !== undefined ? datos.vacunas : mascotaActual.vacunas,
+      tamano: datos.tamano !== undefined ? datos.tamano : mascotaActual.tamano,
+    };
+
     const query = `
-    UPDATE mascotas SET dueno_id = ?, nombre = ?, especie = ?, raza = ?, edad = ?, foto = ?
+    UPDATE mascotas SET dueno_id = ?, nombre = ?, especie = ?, raza = ?, edad = ?, foto = ?,sexo = ? ,peso = ? , vacunas = ?, tamano = ?
     WHERE mascota_id = ?;
     `;
-    await turso.execute({ sql: query, args: [datos.dueno_id, datos.nombre, datos.especie, datos.raza, datos.edad, datos.foto, id] });
+    await turso.execute({ sql: query, args: [
+      updatesPet.dueno_id, 
+      updatesPet.nombre,
+      updatesPet.especie,
+      updatesPet.raza,
+      updatesPet.edad,
+      updatesPet.foto,
+      updatesPet.sexo,
+      updatesPet.peso,
+      updatesPet.vacunas,
+      updatesPet.tamano,
+    id] });
     return { mensaje: "Mascota actualizada correctamente" };
   }
 
