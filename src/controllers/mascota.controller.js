@@ -35,13 +35,13 @@ export const obtenerMascotaPorId = async (req, res) => {
 export const crearMascota = async (req, res) => {
   try {
     const dueno_id = req.usuario_id;
-    const { nombre, especie, raza, edad, foto } = req.body;
+    const { nombre, especie, raza, edad, foto , sexo,peso, vacunas, tamano } = req.body;
 
-    if (!dueno_id || !nombre || !especie || !raza || !edad || !foto) {
+    if (!dueno_id || !nombre || !especie || !raza || !edad || !foto || !sexo || !peso || !vacunas || !tamano) {
       return res.status(400).json({ error: "Todos los campos obligatorios deben llenarse." });
     }
 
-    const resultado = await Mascota.crear({ dueno_id, nombre, especie, raza, edad, foto });
+    const resultado = await Mascota.crear({ dueno_id, nombre, especie, raza, edad, foto , sexo, peso, vacunas, tamano });
     res.status(201).json(resultado);
   } catch (error) {
     res.status(500).json({ error: "Error al crear mascota: ", error });
