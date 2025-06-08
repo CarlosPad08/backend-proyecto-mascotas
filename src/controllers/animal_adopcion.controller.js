@@ -6,6 +6,7 @@ export const obtenerAnimales = async (req, res) => {
     res.json(animales);
   } catch (error) {
     res.status(500).json({ error: "Error al obtener animales: ", error });
+   
   }
 }
 
@@ -16,6 +17,7 @@ export const obtenerAnimalesPorRefugio = async (req, res) => {
     res.json(animales);
   } catch (error) {
     res.status(500).json({ error: "Error al obtener animales por refugio: ", error });
+    
   }
 };
 
@@ -31,12 +33,15 @@ export const obtenerAnimalPorId = async (req, res) => {
 };
 
 export const crearAnimal = async (req, res) => {
+
   try {
     const resultado = await AnimalAdopcion.registrar(req.body);
     res.status(201).json(resultado);
   } catch (error) {
-    res.status(400).json({ error: "Error al crear animal: ", error });
+    res.status(400).json({ error: "Error al crear animal: ", error: error.message || error  });
   }
+
+  
 };
 
 export const actualizarAnimal = async (req, res) => {

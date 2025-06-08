@@ -60,7 +60,7 @@ export const registrarRefugio = async (req, res) => {
         await Refugio.registrar({ nombre, direccion, telefono, descripcion, email, contrasena });
         res.status(201).json({ mensaje: "Refugio registrado exitosamente" });
     } catch (error) {
-        res.status(500).json({ error: "Error al registrar refugio: ", error });
+        res.status(500).json({ error: "Error al registrar refugio: ", error: error.message || error });
     }
 };
 
