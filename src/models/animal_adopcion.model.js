@@ -15,34 +15,35 @@ export class AnimalAdopcion {
       foto: animal.foto || '',
       sexo: animal.sexo || '', 
       peso: animal.peso || '',
-      tamano: animal.tamano || ''
+      tamano: animal.tamano || '',
+      vacunas : animal.vacunas || ''
 
       
     };
   }
 
   static async obtenerPorId(id) {
-    const query = `SELECT animal_id, refugio_id, nombre, especie, raza, edad, estado, descripcion, foto,sexo, peso, tamano FROM animales_adopcion WHERE animal_id = ?;`;
+    const query = `SELECT animal_id, refugio_id, nombre, especie, raza, edad, estado, descripcion, foto,sexo, peso, tamano, vacunas FROM animales_adopcion WHERE animal_id = ?;`;
     const { rows } = await turso.execute({ sql: query, args: [id] });
     return rows[0] ? this.formatearAnimal(rows[0]) : null;
   }
 
     static async obtenerPorRefugio(refugio_id) {
-        const query = `SELECT animal_id, refugio_id, nombre, especie, raza, edad, estado, descripcion, foto,sexo, peso, tamano FROM animales_adopcion WHERE refugio_id = ?;`;
+        const query = `SELECT animal_id, refugio_id, nombre, especie, raza, edad, estado, descripcion, foto,sexo, peso, tamano , vacunasFROM animales_adopcion WHERE refugio_id = ?;`;
         const { rows } = await turso.execute({ sql: query, args: [refugio_id] });
         return rows.map(this.formatearAnimal);
     }
 
     static async obtenerTodos() {
-        const query = `SELECT animal_id, refugio_id, nombre, especie, raza, edad, estado, descripcion, foto,sexo, peso, tamano FROM animales_adopcion;`;
+        const query = `SELECT animal_id, refugio_id, nombre, especie, raza, edad, estado, descripcion, foto,sexo, peso, tamano, vacunas FROM animales_adopcion;`;
         const { rows } = await turso.execute(query);
         return rows.map(this.formatearAnimal);
     }
 
-   static async registrar({ refugio_id, nombre, especie, raza, edad, estado, descripcion, foto,sexo, peso,tamano }) {
+   static async registrar({ refugio_id, nombre, especie, raza, edad, estado, descripcion, foto,sexo, peso,tamano,vacunas }) {
         const query = `
-            INSERT INTO animales_adopcion (refugio_id, nombre, especie, raza, edad, estado, descripcion, foto,sexo, peso, tamano)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?,?,?,?);
+            INSERT INTO animales_adopcion (refugio_id, nombre, especie, raza, edad, estado, descripcion, foto,sexo, peso, tamano, vacunas)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?);
         `;
           //console.log("Valores recibidos:");
            /* console.log("refugio_id:", refugio_id, typeof refugio_id);
@@ -75,7 +76,8 @@ export class AnimalAdopcion {
             foto || '',
             sexo || '',
             peso || '',
-            tamano || '' 
+            tamano || '' ,
+            vacunas || '' 
         
             ]
         });
@@ -101,11 +103,12 @@ export class AnimalAdopcion {
         sexo: datos.sexo !== undefined ? datos.sexo : mascotaActual.sexo,
         peso: datos.peso !== undefined ? datos.peso : mascotaActual.peso,
         tamano: datos.tamano !== undefined ? datos.tamano : mascotaActual.tamano,
+        vacunas: datos.vacunas !== undefined ? datos.vacunas : mascotaActual.vacunas
     };
 
     const query = `
         UPDATE animales_adopcion 
-        SET refugio_id = ?, nombre = ?, especie = ?, raza = ?, edad = ?, estado = ?, descripcion = ?, foto = ?, sexo = ?, peso = ?, tamano = ?
+        SET refugio_id = ?, nombre = ?, especie = ?, raza = ?, edad = ?, estado = ?, descripcion = ?, foto = ?, sexo = ?, peso = ?, tamano = ?, vacunas = ?
         WHERE animal_id = ?;
     `;
 
@@ -126,6 +129,7 @@ export class AnimalAdopcion {
             mascotaActualizada.sexo || '',
             mascotaActualizada.peso || '',
             mascotaActualizada.tamano || '',
+            mascotaActualizada.vacunas || '',
             id
         ]
     });
